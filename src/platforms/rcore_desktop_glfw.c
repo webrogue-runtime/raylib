@@ -1320,6 +1320,9 @@ int InitPlatform(void)
     if ((CORE.Window.flags & FLAG_WINDOW_TRANSPARENT) > 0) glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);     // Transparent framebuffer
     else glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_FALSE);  // Opaque framebuffer
 
+#ifdef __wasi__
+    CORE.Window.flags = CORE.Window.flags | FLAG_WINDOW_HIGHDPI;
+#endif
     if ((CORE.Window.flags & FLAG_WINDOW_HIGHDPI) > 0)
     {
         // Resize window content area based on the monitor content scale.
@@ -1536,7 +1539,9 @@ int InitPlatform(void)
         int fbWidth = CORE.Window.screen.width;
         int fbHeight = CORE.Window.screen.height;
 
+// #ifdef __wasi__
         if ((CORE.Window.flags & FLAG_WINDOW_HIGHDPI) > 0)
+// #endif
         {
             // NOTE: On APPLE platforms system should manage window/input scaling and also framebuffer scaling.
             // Framebuffer scaling should be activated with: glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
