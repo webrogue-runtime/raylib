@@ -3123,6 +3123,7 @@ void rlDrawRenderBatch(rlRenderBatch *batch)
     batch->currentBuffer++;
     if (batch->currentBuffer >= batch->bufferCount) batch->currentBuffer = 0;
 #endif
+    glFlush();
 }
 
 // Set the active render batch for rlgl
