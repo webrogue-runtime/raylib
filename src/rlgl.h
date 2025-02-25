@@ -863,9 +863,15 @@ RLAPI void rlLoadDrawQuad(void);     // Load and draw a quad
 #endif
 
 #if defined(GRAPHICS_API_OPENGL_ES3)
-    #include <GLES3/gl3.h>              // OpenGL ES 3.0 library
-    #define GL_GLEXT_PROTOTYPES
-    #include <GLES2/gl2ext.h>           // OpenGL ES 2.0 extensions library
+    #if defined(PLATFORM_DESKTOP_GLFW) || defined(PLATFORM_DESKTOP_SDL)
+        #define GLAD_GLES2_IMPLEMENTATION
+        #define GLAD_LOADER_LIBRARY_C_
+        #include "external/glad_gles3.h"
+    #else
+        #include <GLES3/gl3.h>              // OpenGL ES 3.0 library
+        #define GL_GLEXT_PROTOTYPES
+        #include <GLES2/gl2ext.h>           // OpenGL ES 2.0 extensions library
+    #endif
 #elif defined(GRAPHICS_API_OPENGL_ES2)
     // NOTE: OpenGL ES 2.0 can be enabled on Desktop platforms,
     // in that case, functions are loaded from a custom glad for OpenGL ES 2.0
@@ -2403,6 +2409,11 @@ void rlLoadExtensions(void *loader)
 #endif  // GRAPHICS_API_OPENGL_33
 
 #if defined(GRAPHICS_API_OPENGL_ES3)
+
+    #if defined(PLATFORM_DESKTOP_GLFW) || defined(PLATFORM_DESKTOP_SDL)
+        if (gladLoadGLES2((GLADloadfunc)loader) == 0) TRACELOG(RL_LOG_WARNING, "GLAD: Cannot load OpenGL ES3.0 functions");
+        else TRACELOG(RL_LOG_INFO, "GLAD: OpenGL ES 3.0 loaded successfully");
+    #endif
     // Register supported extensions flags
     // OpenGL ES 3.0 extensions supported by default (or it should be)
     RLGL.ExtSupported.vao = true;
