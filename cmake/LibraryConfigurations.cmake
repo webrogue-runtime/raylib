@@ -44,7 +44,9 @@ if (${PLATFORM} MATCHES "Desktop")
             set(OPENGL_LIBRARIES "GL")
         endif ()
 
-        if (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "WASI")
+        if ("${CMAKE_SYSTEM_NAME}" STREQUAL "WASI")
+            set(LIBS_PRIVATE EGL)
+        else ()
             set(LIBS_PRIVATE m atomic)
         endif ()
 
@@ -107,7 +109,7 @@ elseif ("${PLATFORM}" MATCHES "DRM")
 elseif ("${PLATFORM}" MATCHES "SDL")
     find_package(SDL2 REQUIRED)
     set(PLATFORM_CPP "PLATFORM_DESKTOP_SDL")
-    set(LIBS_PRIVATE SDL2::SDL2)
+    set(LIBS_PRIVATE SDL2::SDL2 EGL)
 
 endif ()
 
