@@ -102,6 +102,9 @@
     #define _POSIX_C_SOURCE 199309L // Required for: CLOCK_MONOTONIC if compiled with c99 without gnu ext.
 #endif
 
+#if defined(PLATFORM_DESKTOP)
+    #define PLATFORM_DESKTOP_GLFW
+#endif
 #include "raylib.h"                 // Declares module functions
 
 // Check if config flags have been externally provided on compilation line
@@ -518,10 +521,6 @@ __declspec(dllimport) void __stdcall Sleep(unsigned long msTimeout);            
 #if !defined(SUPPORT_MODULE_RTEXT)
 const char *TextFormat(const char *text, ...);              // Formatting of text with variables to 'embed'
 #endif // !SUPPORT_MODULE_RTEXT
-
-#if defined(PLATFORM_DESKTOP)
-    #define PLATFORM_DESKTOP_GLFW
-#endif
 
 // We're using `#pragma message` because `#warning` is not adopted by MSVC.
 #if defined(SUPPORT_CLIPBOARD_IMAGE)

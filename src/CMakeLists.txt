@@ -76,6 +76,10 @@ if (${PLATFORM} MATCHES "Web")
     endif()
 endif()
 
+if (WASI)
+    target_link_options(raylib PUBLIC "-Wl,--export=eglGetProcAddress")
+endif()
+
 set_target_properties(raylib PROPERTIES
                       PUBLIC_HEADER "${raylib_public_headers}"
                       VERSION ${PROJECT_VERSION}
